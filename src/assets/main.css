@@ -42,7 +42,7 @@ body {
 
 body {
   background-color: var(--background-color);
-  font-size: 14px;
+  font-size: var(--font-size-sm);
   font-weight: 400;
   color: var(--text-primary);
   font-family: "Inter", sans-serif;
