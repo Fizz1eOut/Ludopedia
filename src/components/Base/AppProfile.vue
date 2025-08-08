@@ -25,4 +25,10 @@
     width: 42px;
     height: 46px;
   }
+   @media (max-width: 400px) {
+    .profile {
+      width: 36px;
+      height: 40px;
+    }
+  }
 </style>
