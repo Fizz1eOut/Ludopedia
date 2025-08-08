@@ -44,4 +44,12 @@
     background-clip: text;
     color: transparent;
   }
+  @media (max-width: 400px) {
+    .logo__icon {
+      display: none;
+    }
+    .logo__name {
+      font-size: var(--space-lg);
+    }
+  }
 </style>
