@@ -15,8 +15,8 @@
 </script>
 
 <template>
-  <div class="theme-switcher">
-    <app-underlay>
+  <app-underlay>
+    <div class="theme-switcher">
       <app-button
         class="theme-switcher__button"
         @click="toggleTheme"
@@ -27,8 +27,8 @@
           color="var(--text-primary)"
         />
       </app-button>
-    </app-underlay>
-  </div>
+    </div>
+  </app-underlay>
 </template>
 
 <style scoped>
@@ -37,11 +37,13 @@
     justify-content: center;
     align-items: center;
     gap: 10px;
-    max-width: 42px;
-    width: 100%;
+    width: 42px;
     height: 46px;
   }
-  .theme-switcher__button {
-    padding: 6px;
+    @media (max-width: 400px) {
+    .theme-switcher {
+      width: 36px;
+      height: 40px;
+    }
   }
 </style>
