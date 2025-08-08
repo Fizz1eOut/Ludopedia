@@ -46,28 +46,27 @@
 </script>
 
 <template>
-  <div>
-    <Multiselect
-      v-model="selected"
-      :options="options"
-      label="label"
-      track-by="value"
-      placeholder="Enter the name of the game"
-      class="custom-multiselect"
-      searchable
-      :filter-results="false"
-      :internal-search="false"
-      :resolve-on-load="false"
-      @search-change="searchQuery = $event"
-      @select="handleSelect"
-    />
-
-  </div>
+  <Multiselect
+    v-model="selected"
+    :options="options"
+    label="label"
+    track-by="value"
+    placeholder="Enter the name of the game"
+    class="custom-multiselect"
+    searchable
+    :filter-results="false"
+    :internal-search="false"
+    :resolve-on-load="false"
+    @search-change="searchQuery = $event"
+    @select="handleSelect"
+  />
 </template>
 
 <style>
-
   .custom-multiselect {
+    display: block;
+    width: 100%;
+    max-width: 760px;
     border-radius: var(--radius-sm);
     border: 1px solid var(--border-color);
     box-shadow: var(--shadow-sm);
