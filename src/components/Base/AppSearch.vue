@@ -2,8 +2,7 @@
   import { ref, watch } from 'vue';
   import Multiselect from '@vueform/multiselect';
   import '@vueform/multiselect/themes/default.css';
-  import { searchGames } from '@/api/searchGames';
-  import type { Game } from '@/interface/game.interface';
+  import { searchGames, type Game } from '@/api/searchGames';
   import { debounce } from '@/utils/debounce';
 
   const selected = ref<Game | null>(null);

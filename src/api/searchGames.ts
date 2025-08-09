@@ -1,6 +1,10 @@
 import { fetchData } from '@/modules/http';
-import type { Game } from '@/interface/game.interface';
  
+export interface Game {
+  id: number;
+  name: string;
+}
+
 export const searchGames = async (
   query: string = '',
   limit: number = 20
