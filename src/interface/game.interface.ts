@@ -1,12 +1,39 @@
-export interface Game {
-  id: number;
-  name: string;
-  cover?: {
-    url: string;
-  };
-  rating?: number;
+export interface BaseEntity {
+  id?: number
+  name: string
 }
 
-export interface GameSearchResponse {
-  results: Game[];
+export interface GameCover {
+  id?: number
+  url: string
+}
+
+export interface GameVideo {
+  id?: number
+  video_id: string
+}
+
+export type GameGenre = BaseEntity;
+export type GameCompany = BaseEntity;
+export type GamePlatform = BaseEntity;
+
+export interface InvolvedCompany {
+  id: number
+  company: GameCompany
+  developer: boolean
+  publisher: boolean
+}
+
+export interface GameResponse {
+  id: number;
+  name: string;
+  cover?: GameCover;
+  first_release_date?: number;
+  genres?: GameGenre[];
+  involved_companies?: InvolvedCompany[];
+  platforms?: GamePlatform[];
+  videos?: GameVideo[];
+  rating?: number;
+  aggregated_rating?: number;
+  summary?: string;
 }
