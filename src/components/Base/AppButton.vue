@@ -4,13 +4,11 @@
   const props = defineProps<{
     primary?: boolean;
     secondary?: boolean;
-    ghost?: boolean;
   }>();
 
   const classes = computed(() => ({
     'button-primary': props.primary,
     'button-secondary': props.secondary,
-    'button-ghost': props.ghost,
   }));
 </script>
 
@@ -67,20 +65,5 @@
   .button-secondary:hover {
     background-color: var(--red-600);
     box-shadow: var(--shadow-xl);
-  }
-  .button-ghost {
-    --backdrop-blur: blur(4px);
-    height: var(--space-xl);
-    border: 1px solid rgb(255 255 255 / 0.2);
-    color: var(--blue-50);
-    background-color: rgba(255, 255, 255, 0.1);
-    backdrop-filter: var(--backdrop-blur);
-    -webkit-backdrop-filter: var(--backdrop-blur);
-    transition: border 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
-    border-radius: var(--radius-md);
-  }
-  .button-ghost:hover {
-    box-shadow: var(--shadow-xl);
-    background-color: rgb(255 255 255 / 0.2);
   }
 </style>
