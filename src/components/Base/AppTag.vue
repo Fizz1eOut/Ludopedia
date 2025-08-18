@@ -27,9 +27,6 @@
 
 <template>
   <div :class="tagClasses" class="app-tag">
-    <template>
-      <slot name="title" class="app-tag__title" />
-    </template>
     <div class="app-tag_content">
       <app-icon 
         v-if="props.icon" 
@@ -63,9 +60,6 @@
     color: var(--white);
     backdrop-filter: var(--backdrop-blur);
     -webkit-backdrop-filter: var(--backdrop-blur);
-  }
-  .app-tag__title {
-    margin-bottom: var(--space-sm)
   }
   .app-tag_content {
     display: flex;
