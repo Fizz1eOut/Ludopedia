@@ -58,8 +58,8 @@
   /* Особенности геймплея */
 
   /* === ГРАДИЕНТЫ === */
-  --gradient-primary: linear-gradient(to right, var(--blue-600), var(--blue-700));
-  /* Основной градиент кнопок */
+  --gradient: linear-gradient(to right, #7c3aed, #9333ea, #c084fc);
+  --gradient-hover: linear-gradient(to right, #8b5cf6, #a855f7, #d8b4fe);
 
   --gradient-logo: linear-gradient(to right, var(--blue-600), var(--purple-600));
   /* Логотип */
@@ -76,8 +76,6 @@
   --gradient-rating: linear-gradient(to right, var(--blue-600), var(--blue-700));
   /* Градиент рейтинга игроков */
 
-  --gradient-play: linear-gradient(to right, var(--blue-700), #1e40af);
-  /* Кнопка "Играть" */
 
   /* === ТЕНИ === */
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
