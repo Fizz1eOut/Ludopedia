@@ -45,13 +45,13 @@
   .button-gradient {
     height: var(--space-xl);
     color: var(--white);
-    background: var(--gradient-primary);
+    background: var(--gradient);
     box-shadow: var(--shadow-sm);
     transition: all 0.4s ease-in-out;
     border-radius: var(--radius-md);
   }
   .button-gradient:hover {
-    background: var(--gradient-primary-hover);
+    background: var(--gradient-hover);
     box-shadow: var(--shadow-xl);
     scale: 1.02;
   }
