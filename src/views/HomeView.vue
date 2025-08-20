@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { ref, onMounted } from 'vue';
-  import GameCard from '@/components/Content/GameCard/GameCard.vue';
+  import GameCard from '@/components/Content/HeroCard/HeroCard.vue';
   import { getPopularGames } from '@/api/popularGames';
   import type { GameResponse } from '@/interface/game.interface';
 
@@ -28,9 +28,9 @@
 </script>
 
 <template>
-  <game-card :popularGames="popularGames" />
+  <game-card :popularGames="popularGames" detailed />
 </template>
 
-    <style scoped>
+<style scoped>
 
-    </style>
+</style>
