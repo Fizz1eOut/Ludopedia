@@ -4,9 +4,11 @@
   const props = defineProps<{
     primary?: boolean;
     secondary?: boolean;
+    gradient?: boolean;
   }>();
 
   const classes = computed(() => ({
+    'button-gradient': props.gradient,
     'button-primary': props.primary,
     'button-secondary': props.secondary,
   }));
@@ -40,10 +42,22 @@
     background-color: transparent
   }
 
+  .button-gradient {
+    height: var(--space-xl);
+    color: var(--white);
+    background: var(--gradient-primary);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.4s ease-in-out;
+    border-radius: var(--radius-md);
+  }
+  .button-gradient:hover {
+    background: var(--gradient-primary-hover);
+    box-shadow: var(--shadow-xl);
+    scale: 1.02;
+  }
+
   .button-primary {
     height: var(--space-xl);
-    font-size: var(--font-size-md);
-    font-weight: var(--font-weight-regular);
     color: var(--blue-50);
     background-color: var(--blue-500);
     border-radius: var(--radius-md);
