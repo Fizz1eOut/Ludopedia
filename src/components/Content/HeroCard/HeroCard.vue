@@ -83,7 +83,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgb(10 10 10 / 60%);
     z-index: 1;
   }
   .hero-card__body {
