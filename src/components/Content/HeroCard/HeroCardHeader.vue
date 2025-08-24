@@ -32,8 +32,10 @@
   .card-header__title {
     margin-top: var(--space-md);
     font-size: var(--font-size-3xl);
+    color: var(--white);
   }
   .card-header__description {
+    color: var(--white);
     margin-top: var(--space-xs);
     font-size: var(--font-size-xl);
     overflow: hidden;

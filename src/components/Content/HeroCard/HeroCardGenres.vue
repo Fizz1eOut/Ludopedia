@@ -18,7 +18,7 @@
         size="25px"
         color="var(--blue-400)"
       />
-      <app-title>
+      <app-title class="card-genres__title" level="4">
         Genres
       </app-title>
     </div>
@@ -35,6 +35,9 @@
 </template>
 
 <style scoped>
+  .card-genres__title {
+    color: var(--white);
+  }
   .card-genres__header {
    display: flex;
    align-items: center;

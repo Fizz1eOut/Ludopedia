@@ -18,7 +18,7 @@
         size="25px"
         color="var(--green-400)"
       />
-      <app-title>
+      <app-title class="card-platforms__title">
         Platforms
       </app-title>
     </div>
@@ -35,6 +35,9 @@
 </template>
 
 <style scoped>
+  .card-platforms__title {
+    color: var(--white);
+  }
   .card-platforms__header {
    display: flex;
    align-items: center;

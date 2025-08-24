@@ -18,7 +18,7 @@
         size="25px"
         color="var(--yellow-400)"
       />
-      <app-title>
+      <app-title class="card-modes__title">
         Modes
       </app-title>
     </div>
@@ -36,6 +36,9 @@
 </template>
 
 <style scoped>
+  .card-modes__title {
+    color: var(--white);
+  }
   .card-modes__header {
    display: flex;
    align-items: center;
