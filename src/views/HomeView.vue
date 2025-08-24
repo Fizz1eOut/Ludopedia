@@ -1,11 +1,11 @@
 <script setup lang="ts">
   import { ref, onMounted } from 'vue';
-  import GameCard from '@/components/Content/HeroCard/HeroCard.vue';
+  import HeroCardSlider from '@/components/Content/HeroCard/HeroCardSlider.vue';
   import AppLoadingSpinner from '@/components/Base/AppLoadingSpinner.vue';
   import { getPopularGames } from '@/api/popularGames';
   import type { GameResponse } from '@/interface/game.interface';
 
-  const popularGames = ref<GameResponse[]>([]);
+  const games = ref<GameResponse[]>([]);
   const isLoading = ref(false);
 
   const fetchPopularGames = async () => {
@@ -13,8 +13,8 @@
 
     try {
       const response = await getPopularGames();
-      popularGames.value = response;
-      console.log('Popular games fetched:', popularGames.value);
+      games.value = response;
+      console.log('Popular games fetched:', games.value);
     } catch (error) {
       console.error('Error fetching popular games:', error);
     } finally {
@@ -33,7 +33,7 @@
     borderWidth="6px"
     height="300px" 
   />
-  <game-card v-else :popularGames="popularGames" detailed />
+  <hero-card-slider v-else-if="games.length > 0" :games="games" detailed />
 </template>
 
 <style scoped>
