@@ -17,10 +17,11 @@ export const getPopularGames = async (limit: number = 10): Promise<GameResponse[
       involved_companies.developer,
       involved_companies.publisher,
       summary,
-      videos.video_id;
-    sort rating desc;
-    where rating != null & cover != null;
-    limit ${limit};
+      videos.video_id,
+      game_modes.name;
+      sort rating desc;
+      where rating != null & cover != null;
+      limit ${limit};
   `.trim();
 
   const headers = {

@@ -16,6 +16,7 @@ export interface GameVideo {
 export type GameGenre = BaseEntity;
 export type GameCompany = BaseEntity;
 export type GamePlatform = BaseEntity;
+export type GameModes = BaseEntity;
 
 export interface InvolvedCompany {
   id: number
@@ -29,6 +30,7 @@ export interface GameResponse {
   name: string;
   cover?: GameCover;
   first_release_date?: number;
+  game_modes?: GameModes[];
   genres?: GameGenre[];
   involved_companies?: InvolvedCompany[];
   platforms?: GamePlatform[];
