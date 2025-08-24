@@ -12,7 +12,7 @@
   import AppButton from '@/components/Base/AppButton.vue';
 
   interface HeroCardProps {
-    popularGames: GameResponse[];
+    game: GameResponse;
     detailed?: boolean;
   }
   defineProps<HeroCardProps>();
@@ -20,12 +20,10 @@
 
 <template>
   <div 
-    v-for="popularGame in popularGames"
-    :key="popularGame.id"
     class="hero-card"
   >
     <app-image 
-      :url="popularGame?.cover?.url" 
+      :url="game?.cover?.url" 
       size="t_original"
       class="hero-card__bg"
     />
@@ -34,10 +32,10 @@
       <app-container size="sm">
         <div class="hero-card__items">
           <div class="hero-card__content">
-            <hero-card-header :game="popularGame" />
-            <hero-card-stats :game="popularGame" />
-            <hero-card-actions :game="popularGame" />
-            <!-- <router-link v-if="detailed" :to="{ name: 'GameDetails', params: { id: popularGame.id  } }">
+            <hero-card-header :game="game" />
+            <hero-card-stats :game="game" />
+            <hero-card-actions :game="game" />
+            <!-- <router-link v-if="detailed" :to="{ name: 'GameDetails', params: { id: game.id  } }">
               <app-button
               >
                 View details
@@ -46,10 +44,10 @@
             <app-button gradient class="hero-card__details">View details</app-button>
           </div>
           <div class="hero-card__meta">
-            <hero-card-genres :game="popularGame" />
-            <hero-card-platforms :game="popularGame" />
-            <hero-card-modes :game="popularGame" />
-            <hero-card-makers :game="popularGame" />
+            <hero-card-genres :game="game" />
+            <hero-card-platforms :game="game" />
+            <hero-card-modes :game="game" />
+            <hero-card-makers :game="game" />
           </div>
         </div>
       </app-container>
@@ -62,9 +60,10 @@
     position: relative;
     height: 600px;
     overflow: hidden;
-     display: flex;
+    display: flex;
     align-items: center;
     justify-content: center;
+    border-radius: var(--radius-xl);
   }
   .hero-card__bg {
     position: absolute;
@@ -83,7 +82,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgb(10 10 10 / 60%);
+    background-color: rgb(10 10 10 / 30%);
     z-index: 1;
   }
   .hero-card__body {
