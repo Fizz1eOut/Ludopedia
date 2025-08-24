@@ -19,9 +19,7 @@
 </script>
 
 <template>
-  <div 
-    class="hero-card"
-  >
+  <div class="hero-card">
     <app-image 
       :url="game?.cover?.url" 
       size="t_original"
@@ -57,6 +55,7 @@
 
 <style scoped>
   .hero-card {
+    margin-top: var(--space-sm);
     position: relative;
     height: 600px;
     overflow: hidden;
