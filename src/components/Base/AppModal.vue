@@ -1,5 +1,4 @@
 <script setup lang="ts">
-  import ModalHeader from '@/components/Content/Modal/ModalHeader.vue';
   import AppContainer from '@/components/Base/AppContainer.vue';
   import AppUnderlay from '@/components/Base/AppUnderlay.vue';
 
@@ -12,10 +11,12 @@
 
   const emit = defineEmits<{
     (e: 'update:modelValue', value: boolean): void;
+    (e: 'close'): void
   }>();
 
   const close = () => {
     emit('update:modelValue', false);
+    emit('close');
   };
 </script>
 
@@ -27,7 +28,6 @@
           <div class="content">
             <app-underlay>
               <app-container size="sm" class="modal-container">
-                <modal-header @close="close" />
 
                 <div class="content__body">
                   <slot />
