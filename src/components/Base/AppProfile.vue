@@ -1,29 +1,20 @@
 <script setup lang="ts">
-  import { ref } from 'vue';
-  import { useRouter } from 'vue-router';
-  import { useAuthStore } from '@/stores/authStore';
-
+  import { ref} from 'vue';
   import AppIcon from '@/components/Base/AppIcon.vue';
   import AppUnderlay from '@/components/Base/AppUnderlay.vue';
   import AppModal from '@/components/Base/AppModal.vue';
   import AuthForm from '@/components/Content/Auth/AuthForm.vue';
 
   const isModalOpen = ref(false);
-  const router = useRouter();
-  const auth = useAuthStore();
 
   const openModal = () => {
     isModalOpen.value = true;
-  };
-
-  const goToProfile = () => {
-    router.push('/profile');
   };
 </script>
 
 <template>
   <app-underlay>
-    <div class="profile" @click="auth.isAuthenticated ? goToProfile() : openModal()">
+    <div class="profile" @click="openModal">
       <app-icon
         name="profile"
         size="30px"
@@ -34,17 +25,12 @@
   </app-underlay>
 
   <app-modal
-    v-if="!auth.isAuthenticated"
     :model-value="isModalOpen"
     @update:model-value="isModalOpen = $event"
   >
-    <auth-form
-      @close="isModalOpen = false"
-      @authSuccess="isModalOpen = false"
-    />
+    <auth-form @close="isModalOpen = false"  @authSuccess="isModalOpen = false"  />
   </app-modal>
 </template>
-
 
 <style scoped>
   .profile {
