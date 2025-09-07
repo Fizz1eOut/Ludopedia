@@ -121,13 +121,13 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       loading.value = true;
       error.value = null;
+      const redirectUrl = `${window.location.origin}/Ludopedia/#/reset-password`;
     
       const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/reset-password`
+        redirectTo: redirectUrl
       });
-    
+
       if (resetError) throw resetError;
-    
       return { success: true, data: null };
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : 'Password reset error';
@@ -156,4 +156,3 @@ export const useAuthStore = defineStore('auth', () => {
     resetPassword
   };
 });
-
