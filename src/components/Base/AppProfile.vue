@@ -4,10 +4,17 @@
   import AppUnderlay from '@/components/Base/AppUnderlay.vue';
   import AppModal from '@/components/Base/AppModal.vue';
   import AuthForm from '@/components/Content/Auth/AuthForm.vue';
+  import { useAuthStore } from '@/stores/authStore';
 
+  const authStore = useAuthStore();
   const isModalOpen = ref(false);
 
   const openModal = () => {
+    if (authStore.isAuthenticated) {
+      alert(`Пользователь ${authStore.userEmail} уже авторизован`);
+      return;
+    }
+  
     isModalOpen.value = true;
   };
 </script>
