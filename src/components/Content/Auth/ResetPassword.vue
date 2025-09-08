@@ -1,13 +1,27 @@
 <script setup lang="ts">
-  import { ref, onMounted } from 'vue';
+  import { ref, onMounted, computed } from 'vue';
   import AppInput from '@/components/Inputs/AppInput.vue';
   import AppButton from '@/components/Base/AppButton.vue';
   import AppTitle from '@/components/Base/AppTitle.vue';
+  import AppIcon from '@/components/Base/AppIcon.vue';
   import { supabase } from '@/utils/supabase';
   import { useRouter } from 'vue-router';
+  import { useForm, useField } from 'vee-validate';
+  import * as yup from 'yup';
 
-  const password = ref('');
-  const confirmPassword = ref('');
+  const validationSchema = yup.object({
+    password: yup.string().required('Enter your password').min(6, 'At least 6 characters'),
+    confirmPassword: yup
+      .string()
+      .oneOf([yup.ref('password')], 'Passwords must match')
+      .required('Confirm your password'),
+  });
+  const { handleSubmit } = useForm({ validationSchema });
+  const { value: password, errorMessage: passwordError } = useField('password', undefined, { initialValue: '' });
+  const { value: confirmPassword, errorMessage: confirmPasswordError } = useField('confirmPassword', undefined, { initialValue: '' });
+
+  const hasError = computed(() => !!passwordError.value || !!confirmPasswordError.value);
+
   const router = useRouter();
   const sessionReady = ref(false);
   const error = ref('');
@@ -53,19 +67,9 @@
     }
   }
 
-  async function handleUpdate() {
-    if (password.value !== confirmPassword.value) {
-      error.value = 'Passwords don\'t match';
-      return;
-    }
-
-    if (password.value.length < 6) {
-      error.value = 'Password must be at least 6 characters';
-      return;
-    }
-
+  const onSubmit = handleSubmit(async (values) => {
     const { error: updateError } = await supabase.auth.updateUser({
-      password: password.value,
+      password: values.password,
     });
 
     if (!updateError) {
@@ -74,16 +78,26 @@
     } else {
       error.value = updateError.message;
     }
-  }
+  });
 
   onMounted(() => {
     validateResetLink();
   });
+
+  const showPassword = ref(false);
+  const showConfirmPassword = ref(false);
+  const togglePasswordVisibility = (field: 'password' | 'confirmPassword') => {
+    if (field === 'password') {
+      showPassword.value = !showPassword.value;
+    } else {
+      showConfirmPassword.value = !showConfirmPassword.value;
+    }
+  };
 </script>
 
 
 <template>
-  <div class="reset-password">
+  <form @submit.prevent="onSubmit" class="reset-password">
     <app-title>Set new password</app-title>
 
     <div v-if="error" class="reset-password__error">
@@ -93,25 +107,55 @@
     <div v-if="sessionReady" class="reset-password__items">
       <div class="reset-password__item">
         <app-input
-          type="password"
+          :type="showPassword ? 'text' : 'password'" 
           v-model="password"
           placeholder="New password"
+          :class="{ 'has-error': passwordError }"
         />
+        <app-button 
+          type="button"
+          class="toggle-password" 
+          @click="togglePasswordVisibility('password')"
+        >
+          <app-icon 
+            :name="showPassword ? 'eye-off' : 'eye'" 
+            size="20px" 
+            style="color: var(--white)" 
+          />
+        </app-button>
+        <span class="error-message">{{ passwordError }}</span>
       </div>
       <div class="reset-password__item">
         <app-input
-          type="password"
+          :type="showConfirmPassword ? 'text' : 'password'"
           v-model="confirmPassword"
           placeholder="Confirm password"
+          :class="{ 'has-error': confirmPasswordError }"
         />
+        <app-button 
+          type="button"
+          class="toggle-password" 
+          @click="togglePasswordVisibility('confirmPassword')"
+        >
+          <app-icon 
+            :name="showConfirmPassword ? 'eye-off' : 'eye'" 
+            size="20px" 
+            style="color: var(--white)" 
+          />
+        </app-button>
+        <span class="error-message">{{ confirmPasswordError }}</span>
       </div>
       <div class="reset-password__button">
-        <app-button primary @click="handleUpdate">
+        <app-button 
+          :primary="!hasError"
+          :disabled="hasError"
+          type="submit"
+        >
           Update password
         </app-button>
       </div>
     </div>
-  </div>
+  </form>
 </template>
 
 <style scoped>
@@ -126,5 +170,27 @@
   }
   .reset-password__items > *:not(:last-child) {
     margin-bottom: var(--space-sm);
+  }
+  .reset-password__item {
+    position: relative;
+  }
+  .toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 20px;
+    height: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+  }
+  .has-error :deep(.input) {
+    border: 1px solid var(--red-500);
+    border-radius: var(--radius-sm);
+  }
+  .error-message {
+    color: var(--red-500);
+    font-size: 12px;
   }
 </style>
