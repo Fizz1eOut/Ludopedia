@@ -5,12 +5,14 @@
     primary?: boolean;
     secondary?: boolean;
     gradient?: boolean;
+    disabled?: boolean;
   }>();
 
   const classes = computed(() => ({
     'button-gradient': props.gradient,
     'button-primary': props.primary,
     'button-secondary': props.secondary,
+    'button-disabled': props.disabled,
   }));
 </script>
 
@@ -79,5 +81,18 @@
   .button-secondary:hover {
     background-color: var(--red-600);
     box-shadow: var(--shadow-xl);
+  }
+
+  .button-disabled {
+    height: 36px;
+    background-color: var(--text-muted);
+    border-radius: 10px;
+    opacity: 0.3;
+    transition: background-color 0.4s ease-in-out, opacity 0.4s ease-in-out;
+    cursor: not-allowed;
+  }
+  .button-disabled:hover {
+    opacity: 0.4;
+    background-color: var(--text-muted);
   }
 </style>
