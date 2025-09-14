@@ -20,6 +20,7 @@
     password: yup.string().required('Enter your password').min(6, 'At least 6 characters'),
   });
 
+  const loginError = ref<string | null>(null);
   const authStore = useAuthStore();
   const loading = ref(false);
 
@@ -31,6 +32,7 @@
   const hasError = computed(() => !!emailError.value || !!passwordError.value);
 
   const onSubmit = handleSubmit(async (values) => {
+    loginError.value = null;
     try {
       loading.value = true;
       const res = await authStore.signIn({
@@ -39,12 +41,12 @@
       });
 
       if (!res.success) {
-        emit('showError', res.error ?? 'Login error');
+        loginError.value = res.error ?? 'Login error';
       } else {
         emit('loginSuccess');
       }
     } catch (err: unknown) {
-      emit('showError', err instanceof Error ? err.message : 'Login error');
+      loginError.value = err instanceof Error ? err.message : 'Login error';
     } finally {
       loading.value = false;
     }
@@ -100,10 +102,12 @@
       <app-button type="submit" :primary="!hasError" :disabled="hasError">
         Login
       </app-button>
+      <div v-if="loginError" class="error-login">
+        {{ loginError }}
+      </div>
     </div>
   </form>
 </template>
-
 
 <style scoped>
   .login-form > *:not(:last-child) {
@@ -140,5 +144,10 @@
   .error-message {
     color: var(--red-500);
     font-size: 12px;
+  }
+  .error-login {
+    text-align: center;
+    color: var(--red-500);
+    font-size: 16px;
   }
 </style>
