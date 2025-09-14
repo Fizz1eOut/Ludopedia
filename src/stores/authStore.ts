@@ -25,9 +25,9 @@ export const useAuthStore = defineStore('auth', () => {
     
       const { data, error: signUpError } = await supabase.auth.signUp({
         email: credentials.email,
-        password: credentials.password
+        password: credentials.password,
       });
-    
+      // console.log('[SIGNUP] data:', data, 'error:', signUpError);
       if (signUpError) throw signUpError;
     
       user.value = data.user;
