@@ -5,16 +5,21 @@
   import AppModal from '@/components/Base/AppModal.vue';
   import AppTrailer from '@/components/Base/AppTrailer.vue';
   import type { GameResponse } from '@/interface/game.interface';
+  import { useFavoritesStore } from '@/stores/favoritesStore';
 
   interface GameCardActionsProps {
     game: GameResponse;
   }
   defineProps<GameCardActionsProps>();
 
+  const favoritesStore = useFavoritesStore();
   const isModalOpen = ref(false);
 
   const openTrailer = () => {
     isModalOpen.value = true;
+  };
+  const toggleFav = async (itemId: string) => {
+    await favoritesStore.toggleFavorite(itemId);
   };
 </script>
 
@@ -27,14 +32,19 @@
     >
       Watch trailer
     </app-button>
-    <app-button secondary class="card-actions__button--favourite">
+    <app-button 
+      secondary 
+      class="card-actions__button--favourite"
+      @click="toggleFav(game.id.toString())"
+    >
       <app-icon 
-        name="heart"
+        :name="favoritesStore.isFavorite(game.id.toString()) ? 'heartfull' : 'heart'"
         size="20px"
         color="var(--white)"
       />
-      Add to favourites
+      {{ favoritesStore.isFavorite(game.id.toString()) ? 'Added' : 'Add to favourites' }}
     </app-button>
+
 
     <app-modal
       :model-value="isModalOpen"
