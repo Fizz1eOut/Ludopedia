@@ -3,12 +3,14 @@ import { ref, computed, readonly } from 'vue';
 import { supabase } from '@/utils/supabase';
 import type { User } from '@supabase/supabase-js';
 import type { LoginCredentials, RegisterCredentials, CustomAuthResponse } from '@/interface/auth.interface';
+import { useFavoritesStore } from '@/stores/favoritesStore';
 
 export const useAuthStore = defineStore('auth', () => {
   const user = ref<User | null>(null);
   const loading = ref<boolean>(false);
   const error = ref<string | null>(null);
 
+  const favoritesStore = useFavoritesStore();
   const isAuthenticated = computed<boolean>(() => !!user.value);
   const userId = computed<string | undefined>(() => user.value?.id);
   const userEmail = computed<string | undefined>(() => user.value?.email);
@@ -29,6 +31,7 @@ export const useAuthStore = defineStore('auth', () => {
       });
       // console.log('[SIGNUP] data:', data, 'error:', signUpError);
       if (signUpError) throw signUpError;
+      await favoritesStore.loadFavorites();
     
       user.value = data.user;
       // console.log('[AuthStore] signUp success →', data);
@@ -54,8 +57,8 @@ export const useAuthStore = defineStore('auth', () => {
         email: credentials.email.trim(),
         password: credentials.password
       });
-      
       // console.log('[AuthStore] Full response:', { data, error: signInError });
+      await favoritesStore.loadFavorites();
       
       if (signInError) throw signInError;
 
@@ -138,6 +141,19 @@ export const useAuthStore = defineStore('auth', () => {
     }
   };
 
+  const userCreatedAt = computed(() => user.value?.created_at ?? null);
+
+  const userCreatedAtFormatted = computed(() => {
+    if (!user.value?.created_at) return null;
+
+    return new Date(user.value.created_at).toLocaleString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  });
+
+
   return {
     user: readonly(user),
     loading: readonly(loading),
@@ -153,6 +169,8 @@ export const useAuthStore = defineStore('auth', () => {
     signOut,
     getCurrentUser,
     initialize,
-    resetPassword
+    resetPassword,
+    userCreatedAt,
+    userCreatedAtFormatted,
   };
 });
