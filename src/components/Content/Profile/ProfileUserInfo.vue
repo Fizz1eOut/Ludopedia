@@ -3,11 +3,13 @@
   import { supabase } from '@/utils/supabase';
   import { useField, useForm } from 'vee-validate';
   import { object, string } from 'yup';
+  import { useAuthStore } from '@/stores/authStore';
   import type { User } from '@supabase/supabase-js';
   import AppButton from '@/components/Base/AppButton.vue';
   import AppIcon from '@/components/Base/AppIcon.vue';
   import AppInput from '@/components/Inputs/AppInput.vue';
 
+  const authStore = useAuthStore();
   const user = ref<User | null>(null);
   const originalUsername = ref<string>('');
   const isEditing = ref(false);
@@ -251,6 +253,11 @@
           {{ getDisplayEmail() }}
         </div>
       </div>
+
+      <div class="user-info__item">
+        <div class="user-info__title">Member since</div>
+        <div class="user-info__member">{{ authStore.userCreatedAtFormatted }}</div>
+      </div>
     </div>
   </div>
 </template>
@@ -263,7 +270,7 @@
   .user-info__title {
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-regular);
-    color: var(--text-muted);
+    color: var(--text-secondary);
   }
   .user-info__username {
     font-size: var(--font-size-md);
@@ -303,6 +310,11 @@
     margin-top: var(--space-sm);
   }
   .user-info__email {
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-regular);
+    color: var(--text-primary);
+  }
+  .user-info__member {
     font-size: var(--font-size-md);
     font-weight: var(--font-weight-regular);
     color: var(--text-primary);
