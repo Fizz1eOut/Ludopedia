@@ -67,6 +67,16 @@
     z-index: 10;
     box-shadow: var(--shadow-lg);
   }
+  .sidebar :deep(.container) {
+    max-width: none !important;
+    margin: 0 !important;
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  .sidebar__body {
+   height: 100%;
+  }
   .sidebar__header {
     display: flex;
     align-items: center;
