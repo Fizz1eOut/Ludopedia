@@ -3,6 +3,7 @@
   import ProfileAvatarUpload from '@/components/Content/Profile/ProfileAvatarUpload.vue';
   import ProfileUserInfo from '@/components/Content/Profile/ProfileUserInfo.vue';
   import ProfileLogoutButton from '@/components/Content/Profile/ProfileLogoutButton.vue';
+  import ProfileMenuNav from '@/components/Content/Profile/ProfileMenuNav.vue';
 
   const emit = defineEmits<{
     (e: 'logoutSuccess'): void;
@@ -11,19 +12,32 @@
 
 <template>
   <div class="profile-menu">
-    <div class="profile-menu__group">
-      <div class="profile-menu__avatar">
-        <profile-user-avatar size="100px" />
-        <profile-avatar-upload class="upload" />
+    <div class="profile-menu__body">
+      <div class="profile-menu__header">
+        <div class="profile-menu__avatar">
+          <profile-user-avatar size="100px" />
+          <profile-avatar-upload class="upload" />
+        </div>
+      </div>
+    
+      <div class="profile-menu__content">
+        <profile-user-info />
+        <profile-menu-nav />
       </div>
     </div>
-    <profile-user-info />
+
     <profile-logout-button @logoutSuccess="emit('logoutSuccess')" />
   </div>
 </template>
 
 <style scoped>
-  .profile-menu__group {
+  .profile-menu {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    height: 100%;
+  }
+  .profile-menu__header {
     display: flex;
     align-items: center;
     justify-content: center;
