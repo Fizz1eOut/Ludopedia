@@ -2,7 +2,7 @@
   import { computed } from 'vue';
   import AppIcon from '@/components/Base/AppIcon.vue';
 
-  type TagType = 'badge' | 'chip' | 'feature'
+  type TagType = 'badge' | 'chip' | 'feature' | 'success';
 
   interface AppTagProps {
     type: TagType;
@@ -75,6 +75,12 @@
     background-color: var(--black-300);
     border-radius: var(--radius-sm);
     border: 1px solid var(--slate-700);
+  }
+  .app-tag--success {
+    color: var(--green-400);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--green-400);
+    background-color: rgb(20 83 45 / 0.3)
   }
   .app-tag--feature {
     font-size: var(--font-size-sm);

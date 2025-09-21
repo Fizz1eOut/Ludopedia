@@ -27,7 +27,7 @@
       <app-tag 
         v-for="platform in game.platforms"
         :key="platform.id"
-        type="chip"
+        type="success"
         :text="platform.name"
       />
     </div>
