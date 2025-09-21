@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { useFavoritesStore } from '@/stores/favoritesStore';
   import AppIcon from '@/components/Base/AppIcon.vue';
+  import ProfileChangePassword from '@/components/Content/Profile/ProfileChangePassword.vue';
 
   const favoritesStore = useFavoritesStore();
 </script>
@@ -37,14 +38,7 @@
       </li>
 
       <li class="profile-nav__item">
-        <div class="profile-nav__row">
-          <app-icon 
-            name="shield"
-            size="20px"
-            color="var(--green-400)"
-          />
-          Change password
-        </div>
+        <profile-change-password />
       </li>
     </ul>
   </div>
