@@ -2,7 +2,7 @@
   import { ref, onMounted } from 'vue';
   import HeroCardSlider from '@/components/Content/HeroCard/HeroCardSlider.vue';
   import AppLoadingSpinner from '@/components/Base/AppLoadingSpinner.vue';
-  import { getPopularGames } from '@/api/popularGames';
+  import { getFilteredGames } from '@/api/gamesApi';
   import type { GameResponse } from '@/interface/game.interface';
 
   const games = ref<GameResponse[]>([]);
@@ -10,9 +10,11 @@
 
   const fetchPopularGames = async () => {
     isLoading.value = true;
-
     try {
-      const response = await getPopularGames();
+      const response = await getFilteredGames({
+        sort: 'rating desc',
+        limit: 10,
+      });
       games.value = response;
       console.log('Popular games fetched:', games.value);
     } catch (error) {
