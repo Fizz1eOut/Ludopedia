@@ -6,7 +6,7 @@
 
   interface AppTagProps {
     type: TagType;
-    text: string;
+    text?: string;
     icon?: string;
     iconColor?: string;
     rating?: number | string;
@@ -27,7 +27,7 @@
 
 <template>
   <div :class="tagClasses" class="app-tag">
-    <div class="app-tag_content">
+    <div v-if="props.text" class="app-tag_content">
       <app-icon 
         v-if="props.icon" 
         :name="props.icon"
