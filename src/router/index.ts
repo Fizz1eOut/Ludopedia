@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 import type { RouterScrollBehavior } from 'vue-router';
 import HomeView from '@/views/HomeView.vue';
 import ResetPassword from '@/components/Content/Auth/ResetPassword.vue';
+import FavoritesView from '@/views/FavoritesView.vue';
 
 const scrollBehavior: RouterScrollBehavior = (to, from, savedPosition) => {
   if (savedPosition) {
@@ -17,6 +18,7 @@ const router = createRouter({
   routes: [
     { path: '/', name: 'home', component: HomeView, meta: { title: 'Home' } },
     { path: '/reset-password/:params*', name: 'reset-password', component: ResetPassword, meta: { title: 'Reset-password' } },
+    { path: '/favorites', name: 'favorites', component: FavoritesView, meta: { title: 'Favorites' } },
   ],
   scrollBehavior,
 });

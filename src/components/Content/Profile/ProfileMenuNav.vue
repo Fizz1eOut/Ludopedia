@@ -2,26 +2,28 @@
   import { useFavoritesStore } from '@/stores/favoritesStore';
   import AppIcon from '@/components/Base/AppIcon.vue';
   import ProfileChangePassword from '@/components/Content/Profile/ProfileChangePassword.vue';
-
+    
   const favoritesStore = useFavoritesStore();
 </script>
 
 <template>
   <div class="profile-nav">
     <ul class="profile-nav__list">
-      <li class="profile-nav__item">
-        <div class="profile-nav__row">
-          <app-icon 
-            name="heart"
-            size="20px"
-            color="var(--red-500)"
-          />
-          Favorites
-        </div>
-        <div class="profile-nav__count">
-          {{ favoritesStore.favoritesCount }}
-        </div>
-      </li>
+      <router-link to="/favorites">
+        <li class="profile-nav__item">
+          <div class="profile-nav__row">
+            <app-icon 
+              name="heart"
+              size="20px"
+              color="var(--red-500)"
+            />
+            Favorites
+          </div>
+          <div class="profile-nav__count">
+            {{ favoritesStore.favoritesCount }}
+          </div>
+        </li>
+      </router-link>
 
       <li class="profile-nav__item">
         <div class="profile-nav__row">
