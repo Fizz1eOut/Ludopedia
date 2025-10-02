@@ -2,7 +2,9 @@ import { defineStore } from 'pinia';
 import { ref, computed, readonly } from 'vue';
 import { supabase } from '@/utils/supabase';
 import { useAuthStore } from '@/stores/authStore';
-import type { Favorite, FavoriteInsert } from '@/interface/database.interface';
+import { getGameById } from '@/api/gameById';
+import type { Favorite } from '@/interface/database.interface';
+import type { GameResponse } from '@/interface/game.interface';
 
 interface FavoritesResponse {
   success: boolean
@@ -12,11 +14,12 @@ interface FavoritesResponse {
 
 export const useFavoritesStore = defineStore('favorites', () => {
   const favorites = ref<Favorite[]>([]);
+  const favoriteGames = ref<GameResponse[]>([]);
   const loading = ref(false);
   const error = ref<string | null>(null);
 
   const favoritesCount = computed(() => favorites.value.length);
-  const favoriteItems  = computed(() => favorites.value.map(f => f.item));
+  const favoriteItems = computed(() => favorites.value.map(f => f.item));
   const isFavorite = computed(() => (item: string) =>
     favorites.value.some(f => f.item === item)
   );
@@ -27,6 +30,7 @@ export const useFavoritesStore = defineStore('favorites', () => {
     const auth = useAuthStore();
     if (!auth.isAuthenticated || !auth.userId) {
       favorites.value = [];
+      favoriteGames.value = [];
       return;
     }
     try {
@@ -40,7 +44,11 @@ export const useFavoritesStore = defineStore('favorites', () => {
         .order('created_at', { ascending: false });
 
       if (fetchError) throw fetchError;
+
       favorites.value = (data ?? []) as Favorite[];
+      favoriteGames.value = favorites.value
+        .map(f => f.game_data)
+        .filter((g): g is GameResponse => g !== null); // 👈 строгая проверка
     } catch (err: unknown) {
       error.value = err instanceof Error ? err.message : 'Error loading favorites';
       console.error(err);
@@ -62,14 +70,18 @@ export const useFavoritesStore = defineStore('favorites', () => {
       loading.value = true;
       error.value = null;
 
-      const newFavorite: FavoriteInsert = {
-        user_id: auth.userId,
-        item
-      };
+      const gameData = await getGameById(item);
+      if (!gameData) {
+        return { success: false, error: 'Game not found' };
+      }
 
       const { data, error: insertError } = await supabase
         .from('favorites')
-        .insert(newFavorite)
+        .insert({
+          user_id: auth.userId,
+          item,
+          game_data: gameData,
+        })
         .select()
         .single();
 
@@ -77,6 +89,7 @@ export const useFavoritesStore = defineStore('favorites', () => {
 
       if (data) {
         favorites.value.unshift(data as Favorite);
+        favoriteGames.value.unshift(gameData);
       }
 
       return { success: true, data: data as Favorite };
@@ -108,6 +121,8 @@ export const useFavoritesStore = defineStore('favorites', () => {
       if (deleteError) throw deleteError;
 
       favorites.value = favorites.value.filter(f => f.item !== item);
+      favoriteGames.value = favoriteGames.value.filter(game => game.id.toString() !== item);
+
       return { success: true };
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Error removing from favorites';
@@ -134,6 +149,7 @@ export const useFavoritesStore = defineStore('favorites', () => {
 
       if (deleteError) throw deleteError;
       favorites.value = [];
+      favoriteGames.value = [];
     } catch (err: unknown) {
       error.value = err instanceof Error ? err.message : 'Error clearing favorites';
     } finally {
@@ -143,13 +159,14 @@ export const useFavoritesStore = defineStore('favorites', () => {
 
   return {
     favorites: readonly(favorites),
+    favoriteGames: readonly(favoriteGames),
     loading: readonly(loading),
     error: readonly(error),
-  
+
     favoritesCount,
     favoriteItems,
     isFavorite,
-  
+
     clearError,
     loadFavorites,
     addToFavorites,
