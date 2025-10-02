@@ -30,12 +30,13 @@ export interface GameResponse {
   name: string;
   cover?: GameCover;
   first_release_date?: number;
-  game_modes?: GameModes[];
-  genres?: GameGenre[];
-  involved_companies?: InvolvedCompany[];
-  platforms?: GamePlatform[];
-  videos?: GameVideo[];
+  game_modes?: readonly GameModes[];
+  genres?: readonly GameGenre[];
+  involved_companies?: readonly InvolvedCompany[];
+  platforms?: readonly GamePlatform[];
+  videos?: readonly GameVideo[];
   rating?: number;
   aggregated_rating?: number;
   summary?: string;
 }
+
