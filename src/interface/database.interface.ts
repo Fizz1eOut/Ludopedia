@@ -1,3 +1,5 @@
+import type { GameResponse } from '@/interface/game.interface';
+
 export interface Database {
   public: {
     Tables: {
@@ -7,18 +9,21 @@ export interface Database {
           created_at: string
           user_id: string
           item: string
+          game_data: GameResponse | null
         }
         Insert: {
           id?: string
           created_at?: string
           user_id: string
           item: string
+          game_data?: GameResponse | null
         }
         Update: {
           id?: string
           created_at?: string
           user_id?: string
           item?: string
+          game_data?: GameResponse | null
         }
         Relationships: []
       }
