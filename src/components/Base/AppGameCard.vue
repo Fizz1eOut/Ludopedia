@@ -142,6 +142,11 @@
     font-weight: var(--font-weight-regular);
     color: var(--text-primary);
   }
+  @media (max-width: 768px) {
+     :deep(.image) {
+      object-fit: fill;
+    }
+  }
   @media (max-width: 500px) {
      .game-card__img {
       height: 350px;
