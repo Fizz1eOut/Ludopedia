@@ -3,17 +3,19 @@
 </script>
 
 <template>
-  <div class="logo">
-    <div class="logo__icon">
-      <app-icon 
-        name="logo" 
-        size="var(--space-lg)"
-        color="var(--blue-50)"
-        class="icon"
-      />
+  <router-link to="/">
+    <div class="logo">
+      <div class="logo__icon">
+        <app-icon 
+          name="logo" 
+          size="var(--space-lg)"
+          color="var(--blue-50)"
+          class="icon"
+        />
+      </div>
+      <div class="logo__name">Ludopedia</div>
     </div>
-    <div class="logo__name">Ludopedia</div>
-  </div>
+  </router-link>
 </template>
 
 <style scoped>
