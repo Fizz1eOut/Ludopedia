@@ -42,9 +42,6 @@
 </template>
 
 <style scoped>
-  .content__body {
-    padding-top: var(--space-md);
-  }
   .overlay {
     position: fixed;
     left: 0;

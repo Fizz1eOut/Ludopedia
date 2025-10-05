@@ -23,9 +23,6 @@
 </template>
 
 <style scoped>
-  .favorites-header {
-    margin-top: var(--space-md);
-  }
   .favorites-header__length {
     font-size: var(--font-size-sm);
     color: var(--color-text-secondary);
