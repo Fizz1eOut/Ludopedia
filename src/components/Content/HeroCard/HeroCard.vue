@@ -10,12 +10,18 @@
   import HeroCardModes from '@/components/Content/HeroCard/HeroCardModes.vue';
   import HeroCardMakers from '@/components/Content/HeroCard/HeroCardMakers.vue';
   import AppButton from '@/components/Base/AppButton.vue';
+  import { useRouter } from 'vue-router';
 
   interface HeroCardProps {
     game: GameResponse;
     detailed?: boolean;
   }
   defineProps<HeroCardProps>();
+
+  const router = useRouter();
+  const goToGameDetails = (id: number) => {
+    router.push({ name: 'game', params: { id } });
+  };
 </script>
 
 <template>
@@ -30,16 +36,15 @@
       <app-container size="sm">
         <div class="hero-card__items">
           <div class="hero-card__content">
-            <hero-card-header :game="game" />
+            <hero-card-header :game="game" :detailed="detailed" />
             <hero-card-stats :game="game" />
             <hero-card-actions :game="game" />
-            <!-- <router-link v-if="detailed" :to="{ name: 'GameDetails', params: { id: game.id  } }">
-              <app-button
-              >
-                View details
-              </app-button>
-            </router-link> -->
-            <app-button gradient class="hero-card__details">View details</app-button>
+            <app-button 
+              v-if="detailed"
+              gradient 
+              @click="goToGameDetails(game.id)"  
+              class="hero-card__details"
+            >View details</app-button>
           </div>
           <div class="hero-card__meta">
             <hero-card-genres :game="game" />

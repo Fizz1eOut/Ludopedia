@@ -5,6 +5,7 @@
 
   interface GameCardHeaderProps {
     game: GameResponse;
+    detailed?: boolean;
   }
   defineProps<GameCardHeaderProps>();
 </script>
@@ -12,6 +13,7 @@
 <template>
   <div class="game-card__header card-header">
     <app-tag
+      v-if="detailed"
       type="badge"
       text="Game of the day"
       icon="cup"
