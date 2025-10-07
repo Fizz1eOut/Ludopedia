@@ -51,6 +51,33 @@ export interface Database {
         }
         Relationships: []
       }
+      reviews: {
+        Row: {
+          id: string
+          created_at: string
+          user_id: string
+          game_id: string
+          rating: number
+          comment: string
+        }
+        Insert: {
+          id?: string
+          created_at?: string
+          user_id: string
+          game_id: string
+          rating: number
+          comment: string
+        }
+        Update: {
+          id?: string
+          created_at?: string
+          user_id?: string
+          game_id?: string
+          rating?: number
+          comment?: string
+        }
+        Relationships: []
+      }
     }
     Views: Record<string, never>
     Functions: Record<string, never>
@@ -59,10 +86,14 @@ export interface Database {
   }
 }
 
-export type Favorite = Database['public']['Tables']['favorites']['Row']
-export type FavoriteInsert = Database['public']['Tables']['favorites']['Insert']
-export type FavoriteUpdate = Database['public']['Tables']['favorites']['Update']
+export type Favorite = Database['public']['Tables']['favorites']['Row'];
+export type FavoriteInsert = Database['public']['Tables']['favorites']['Insert'];
+export type FavoriteUpdate = Database['public']['Tables']['favorites']['Update'];
 
-export type Profile = Database['public']['Tables']['profiles']['Row']
-export type ProfileInsert = Database['public']['Tables']['profiles']['Insert']
-export type ProfileUpdate = Database['public']['Tables']['profiles']['Update']
+export type Profile = Database['public']['Tables']['profiles']['Row'];
+export type ProfileInsert = Database['public']['Tables']['profiles']['Insert'];
+export type ProfileUpdate = Database['public']['Tables']['profiles']['Update'];
+
+export type Review = Database['public']['Tables']['reviews']['Row'];
+export type ReviewInsert = Database['public']['Tables']['reviews']['Insert'];
+export type ReviewUpdate = Database['public']['Tables']['reviews']['Update'];
