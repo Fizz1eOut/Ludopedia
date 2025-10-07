@@ -18,7 +18,9 @@ export const getGameById = async (gameId: string | number): Promise<GameResponse
       involved_companies.publisher,
       summary,
       videos.video_id,
-      game_modes.name;
+      game_modes.name,
+      screenshots.url,
+      similar_games.name;
     where id = ${gameId};
     limit 1;
   `.trim();
