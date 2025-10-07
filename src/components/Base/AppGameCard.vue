@@ -7,11 +7,17 @@
   import AppButton from '@/components/Base/AppButton.vue';
   import AppIcon from '@/components/Base/AppIcon.vue';
   import type { GameResponse } from '@/interface/game.interface';
+  import { useRouter } from 'vue-router';
 
   interface AppGameCardProps {
     game: GameResponse;
   }
   defineProps<AppGameCardProps>();
+
+  const router = useRouter();
+  const goToGameDetails = (id: number) => {
+    router.push({ name: 'game', params: { id } });
+  };
 </script>
 
 <template>
@@ -63,7 +69,7 @@
             </div>
           </div>
           <div class="game-card__button">
-            <app-button primary>View Product</app-button>
+            <app-button primary @click="goToGameDetails(game.id)">View Product</app-button>
           </div>
         </div>
       </app-container>
