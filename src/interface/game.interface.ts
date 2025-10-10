@@ -13,6 +13,11 @@ export interface GameVideo {
   video_id: string
 }
 
+export interface GameScreenshots {
+  id?: number
+  url: string
+}
+
 export type GameGenre = BaseEntity;
 export type GameCompany = BaseEntity;
 export type GamePlatform = BaseEntity;
@@ -35,6 +40,7 @@ export interface GameResponse {
   involved_companies?: readonly InvolvedCompany[];
   platforms?: readonly GamePlatform[];
   videos?: readonly GameVideo[];
+  screenshots: GameScreenshots[]
   rating?: number;
   aggregated_rating?: number;
   summary?: string;

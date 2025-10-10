@@ -2,6 +2,7 @@
   import { ref, watch, onMounted } from 'vue';
   import HeroCard from '@/components/Content/HeroCard/HeroCard.vue';
   import ReviewBlock from '@/components/Content/Review/ReviewBlock.vue';
+  import DetailsGameScreenshots from '@/components/Content/DetailsGame/DetailsGameScreenshots.vue';
   import { getGameById } from '@/api/gameById';
   import type { GameResponse } from '@/interface/game.interface';
   import { useRoute } from 'vue-router';
@@ -33,6 +34,7 @@
 <template>
   <div v-if="game">
     <hero-card :game="game" :detailed="false" />
+    <details-game-screenshots :screenshots="game.screenshots" />
     <review-block :game-id="String(game.id)" />
   </div>
 </template>
