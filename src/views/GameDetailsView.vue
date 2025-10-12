@@ -7,9 +7,11 @@
   import { getGameById } from '@/api/gameById';
   import type { GameResponse } from '@/interface/game.interface';
   import { useRoute } from 'vue-router';
+  import { useMediaQuery } from '@/composables/useMediaQuery';
 
   const route = useRoute();
   const game = ref<GameResponse | null>(null);
+  const { isMobile } = useMediaQuery('(max-width: 768px)');
 
   const fetchGameDetails = async (id: number) => {
     try {
@@ -35,7 +37,7 @@
 <template>
   <div v-if="game">
     <hero-card :game="game" :detailed="false" />
-    <details-game-meta :game="game" />
+    <details-game-meta v-if="isMobile" :game="game" />
     <details-game-screenshots :screenshots="game.screenshots" />
     <review-block :game-id="String(game.id)" />
   </div>
