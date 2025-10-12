@@ -55,5 +55,10 @@
     .card-actions {
       flex-direction: column;
     }
+    .card-actions__button--trailer,
+    .card-actions__button--favorites {
+      flex: none;
+      width: 100%;
+    }
   }
 </style>
