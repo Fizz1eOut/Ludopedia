@@ -4,6 +4,7 @@
   import AppGameCard from '@/components/Base/AppGameCard.vue';
   import BaseSlider from '@/components/Content/Sliders/BaseSlider.vue';
   import AppTitle from '@/components/Base/AppTitle.vue';
+  import AppLink from '@/components/Base/AppLink.vue';
   import { getFilteredGames } from '@/api/gamesApi';
   import type { GameResponse } from '@/interface/game.interface';
 
@@ -44,7 +45,12 @@
     height="300px" 
   />
   <div v-else-if="games.length > 0">
-    <app-title class="releases-title">New Releases</app-title>
+    <div class="releases__row">
+      <app-title class="releases-title">New Releases</app-title>
+      <router-link to="/games">
+        <app-link>View All</app-link>
+      </router-link>
+    </div>
     <base-slider :slides="games" :options="{ perPage: 4, gap: '10px' }">
       <template #default="{ slide }">
         <app-game-card :game="slide" />
@@ -54,6 +60,12 @@
 </template>
 
 <style scoped>
+  .releases__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
   .releases-title {
     margin-top: var(--space-xl);
     margin-bottom: var(--space-md);

@@ -65,7 +65,9 @@
       <div class="game-categories__item">
         <div class="game-categories__row">
           <app-title>Top RPG Games</app-title>
-          <app-link>View All</app-link>
+          <router-link to="/games">
+            <app-link>View All</app-link>
+          </router-link>
         </div>
         <BaseSlider :slides="topRPG" :options="{ perPage: 4, gap: '10px' }">
           <template #default="{ slide }">
@@ -77,7 +79,9 @@
       <div class="game-categories__item">
         <div class="game-categories__row">
           <app-title>Top Action Games</app-title>
-          <app-link>View All</app-link>
+          <router-link to="/games">
+            <app-link>View All</app-link>
+          </router-link>
         </div>
         <BaseSlider :slides="topAction" :options="{ perPage: 4, gap: '10px' }">
           <template #default="{ slide }">
@@ -89,7 +93,9 @@
       <div class="game-categories__item">
         <div class="game-categories__row">
           <app-title>Top  Racing Games</app-title>
-          <app-link>View All</app-link>
+          <router-link to="/games">
+            <app-link>View All</app-link>
+          </router-link>
         </div>
         <BaseSlider :slides="topRacing" :options="{ perPage: 4, gap: '10px' }">
           <template #default="{ slide }">

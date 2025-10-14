@@ -127,28 +127,32 @@
     border: 1px solid var(--border-color);
     box-shadow: var(--shadow-sm);
   }
-  :deep(.custom-multiselect .multiselect-tags-search) {
+   :deep(.custom-multiselect .multiselect-tags-search) {
     background-color: var(--surface-color);
   }
-  .custom-multiselect .multiselect-search {
+  :deep(.custom-multiselect .multiselect-search) {
     color: var(--color-white);
     background-color: var(--surface-color);
   }
-  .custom-multiselect.is-active {
+  :deep(.custom-multiselect.is-active) {
     border: 1px solid var(--border-color);
     outline: none;
     box-shadow: none;
   }
-  .custom-multiselect .multiselect-dropdown {
+  :deep(.custom-multiselect .multiselect-dropdown) {
     border: 1px solid var(--border-color);
     outline: none;
     box-shadow: none;
   }
-  .custom-multiselect .multiselect__content {
+  :deep(.custom-multiselect .multiselect__content) {
     background-color: var(--surface-color);
     color: var(--color-white);
   }
-  .custom-multiselect .multiselect-dropdown {
+  :deep(.custom-multiselect .multiselect-dropdown) {
     background-color: var(--surface-color);
+  }
+  :deep(.custom-multiselect .multiselect-option.is-pointed) {
+    background-color: var(--purple-400);
+    color: var(--text-primary);
   }
 </style>
