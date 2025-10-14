@@ -48,6 +48,10 @@
   .games-filters {
     max-width: 350px;
     width: 100%;
+    position: sticky;
+    top: 20px;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
   }
   .games-filters__header {
     margin-bottom: var(--space-md);
