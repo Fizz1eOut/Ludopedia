@@ -1,12 +1,15 @@
 <script setup lang="ts">
   import { ref, watch, onMounted } from 'vue';
+  import { useRoute } from 'vue-router';
   import Multiselect from '@vueform/multiselect';
   import '@vueform/multiselect/themes/default.css';
   import { useGameFiltersStore } from '@/stores/gameFiltersStore';
+  import { useFilterSync } from '@/composables/useFilterSync';
   import AppTitle from '@/components/Base/AppTitle.vue';
 
   const gameFiltersStore = useGameFiltersStore();
   const selectedSort = ref('rating desc');
+  const route = useRoute();
 
   const sortOptions = [
     { value: 'rating desc', label: 'Rating (High to Low)' },
@@ -15,8 +18,23 @@
     { value: 'first_release_date asc', label: 'Release Date (Oldest)' },
   ];
 
+  const { updateQuery } = useFilterSync({
+    queryParam: 'sort',
+    storeFilterKey: 'sort',
+    defaultValue: 'rating desc',
+    onChange: (value) => {
+      selectedSort.value = value as string;
+    }
+  });
+
   onMounted(() => {
-    selectedSort.value = gameFiltersStore.filters.sort;
+    const sortFromQuery = route.query.sort as string | undefined;
+    if (sortFromQuery) {
+      selectedSort.value = sortFromQuery;
+      gameFiltersStore.filters.sort = sortFromQuery;
+    } else {
+      selectedSort.value = gameFiltersStore.filters.sort  || 'rating desc';
+    }
   });
 
   watch(
@@ -28,10 +46,11 @@
     }
   );
 
-  const handleSortChange = (value: string) => {
-    console.log('Sort changed to:', value);
+  const handleSortChange = async (value: string) => {
+    selectedSort.value = value;
     gameFiltersStore.filters.sort = value;
     gameFiltersStore.fetchGames();
+    await updateQuery(value);
   };
 </script>
 

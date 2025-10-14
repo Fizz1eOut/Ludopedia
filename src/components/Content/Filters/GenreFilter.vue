@@ -4,6 +4,7 @@
   import '@vueform/multiselect/themes/default.css';
   import { getGenres, type Genre } from '@/api/genresApi';
   import { useGameFiltersStore } from '@/stores/gameFiltersStore';
+  import { useFilterSync } from '@/composables/useFilterSync';
   import AppTitle from '@/components/Base/AppTitle.vue';
   import AppLoadingSpinner from '@/components/Base/AppLoadingSpinner.vue';
 
@@ -11,6 +12,13 @@
   const genres = ref<Genre[]>([]);
   const loading = ref(false);
   const error = ref<string | null>(null);
+
+  const { updateQuery } = useFilterSync({
+    queryParam: 'genres',
+    storeFilterKey: 'genres',
+    isArray: true,
+    defaultValue: [],
+  });
 
   const genreOptions = computed(() => {
     return genres.value.map(genre => ({
@@ -25,7 +33,7 @@
     }
   });
 
-  const handleGenreChange = (value: number[]) => {
+  const handleGenreChange = async (value: number[]) => {
     const currentGenres = gameFiltersStore.filters.genres;
   
     const added = value.filter(id => !currentGenres.includes(id));
@@ -33,6 +41,8 @@
 
     added.forEach(id => gameFiltersStore.toggleGenre(id));
     removed.forEach(id => gameFiltersStore.toggleGenre(id));
+
+    await updateQuery(gameFiltersStore.filters.genres);
   };
 
   const fetchGenres = async () => {

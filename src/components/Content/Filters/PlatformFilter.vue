@@ -4,6 +4,7 @@
   import '@vueform/multiselect/themes/default.css';
   import { getPlatforms, type Platform } from '@/api/platformApi';
   import { useGameFiltersStore } from '@/stores/gameFiltersStore';
+  import { useFilterSync } from '@/composables/useFilterSync';
   import AppTitle from '@/components/Base/AppTitle.vue';
   import AppLoadingSpinner from '@/components/Base/AppLoadingSpinner.vue';
 
@@ -11,6 +12,13 @@
   const platforms = ref<Platform[]>([]);
   const loading = ref(false);
   const error = ref<string | null>(null);
+
+  const { updateQuery } = useFilterSync({
+    queryParam: 'platforms',
+    storeFilterKey: 'platforms',
+    isArray: true,
+    defaultValue: [],
+  });
 
   const platformOptions = computed(() => {
     return platforms.value.map(platform => ({
@@ -25,7 +33,7 @@
     }
   });
 
-  const handlePlatformChange = (value: number[]) => {
+  const handlePlatformChange = async (value: number[]) => {
     const currentPlatforms = gameFiltersStore.filters.platforms;
   
     const added = value.filter(id => !currentPlatforms.includes(id));
@@ -33,6 +41,8 @@
 
     added.forEach(id => gameFiltersStore.togglePlatform(id));
     removed.forEach(id => gameFiltersStore.togglePlatform(id));
+
+    await updateQuery(gameFiltersStore.filters.platforms);
   };
 
   const fetchPlatforms = async () => {
