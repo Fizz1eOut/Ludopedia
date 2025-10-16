@@ -12,6 +12,7 @@ interface GameFilters {
   limit?: number;
   minRating?: number;
   search?: string;
+  offset?: number;
 }
 
 export const getFilteredGames = async (filters: GameFilters = {}): Promise<GameResponse[]> => {
@@ -24,33 +25,17 @@ export const getFilteredGames = async (filters: GameFilters = {}): Promise<GameR
     limit = 20,
     minRating,
     search,
+    offset = 0,
   } = filters;
 
   const whereClauses: string[] = ['cover != null'];
 
-  if (genres?.length) {
-    whereClauses.push(`genres = (${genres.join(',')})`);
-  }
-
-  if (platforms?.length) {
-    whereClauses.push(`platforms = (${platforms.join(',')})`);
-  }
-
-  if (dateFrom) {
-    whereClauses.push(`first_release_date >= ${dateFrom}`);
-  }
-
-  if (dateTo) {
-    whereClauses.push(`first_release_date <= ${dateTo}`);
-  }
-
-  if (minRating) {
-    whereClauses.push(`rating >= ${minRating}`);
-  }
-
-  if (search) {
-    whereClauses.push(`name ~ *"${search}"*`);
-  }
+  if (genres?.length) whereClauses.push(`genres = (${genres.join(',')})`);
+  if (platforms?.length) whereClauses.push(`platforms = (${platforms.join(',')})`);
+  if (dateFrom) whereClauses.push(`first_release_date >= ${dateFrom}`);
+  if (dateTo) whereClauses.push(`first_release_date <= ${dateTo}`);
+  if (minRating) whereClauses.push(`rating >= ${minRating}`);
+  if (search) whereClauses.push(`name ~ *"${search}"*`);
 
   const whereClause = whereClauses.length ? `where ${whereClauses.join(' & ')};` : '';
 
@@ -72,16 +57,15 @@ export const getFilteredGames = async (filters: GameFilters = {}): Promise<GameR
     ${whereClause}
     sort ${sort};
     limit ${limit};
+    offset ${offset};
   `.trim();
-
-  const headers = {
-    'Content-Type': 'text/plain',
-    'Accept': 'application/json',
-  };
 
   return fetchData<GameResponse[]>(`${baseUrl}/games`, {
     method: 'POST',
-    headers,
+    headers: {
+      'Content-Type': 'text/plain',
+      'Accept': 'application/json',
+    },
     body: queryBody,
   });
 };
