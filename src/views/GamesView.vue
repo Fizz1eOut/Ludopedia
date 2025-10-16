@@ -18,4 +18,10 @@
     align-items: flex-start;
     gap: 10px;
   }
+  @media (max-width: 610px) {
+    .games-container {
+      flex-direction: column;
+      row-gap: 20px;
+    }
+  }
 </style>

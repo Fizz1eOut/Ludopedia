@@ -114,4 +114,9 @@
     gap: 10px;
     font-size: var(--font-size-sm);
   }
+  @media (max-width: 610px) {
+    .games-list__item {
+      max-width: 100%;
+    }
+  }
 </style>

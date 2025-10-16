@@ -81,4 +81,10 @@
   .games-filters__content > *:not(:last-child){
     margin-bottom: var(--space-md);
   }
+  @media (max-width: 610px) {
+    .games-filters {
+      position: static;
+      max-width: 100%;
+    }
+  }
 </style>
