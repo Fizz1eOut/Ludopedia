@@ -1,9 +1,19 @@
 <script setup lang="ts">
+  import { onMounted } from 'vue';
   import { useFavoritesStore } from '@/stores/favoritesStore';
   import AppIcon from '@/components/Base/AppIcon.vue';
   import ProfileChangePassword from '@/components/Content/Profile/ProfileChangePassword.vue';
-    
+  import { useReviewsStore } from '@/stores/reviewsStore';
+  import { storeToRefs } from 'pinia';
+  
   const favoritesStore = useFavoritesStore();
+  const reviewStore = useReviewsStore();
+  const { userReviewsCount } = storeToRefs(reviewStore);
+  const { loadUserReviews } = reviewStore;
+
+  onMounted(() => {
+    loadUserReviews();
+  });
 </script>
 
 <template>
@@ -25,19 +35,21 @@
         </li>
       </router-link>
 
-      <li class="profile-nav__item">
-        <div class="profile-nav__row">
-          <app-icon 
-            name="comment"
-            size="20px"
-            color="var(--purple-400)"
-          />
-          My comments
-        </div>
-        <div class="profile-nav__count">
-          0
-        </div>
-      </li>
+      <router-link to="/profile/comments">
+        <li class="profile-nav__item">
+          <div class="profile-nav__row">
+            <app-icon 
+              name="comment"
+              size="20px"
+              color="var(--purple-400)"
+            />
+            My comments
+          </div>
+          <div class="profile-nav__count">
+            {{ userReviewsCount }}
+          </div>
+        </li>
+      </router-link>
 
       <li class="profile-nav__item">
         <profile-change-password />
