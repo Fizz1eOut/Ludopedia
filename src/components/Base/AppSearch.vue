@@ -2,15 +2,19 @@
   import { ref, watch } from 'vue';
   import Multiselect from '@vueform/multiselect';
   import '@vueform/multiselect/themes/default.css';
-  import { searchGames, type Game } from '@/api/searchGames';
+  import { getFilteredGames } from '@/api/gamesApi';
   import { debounce } from '@/utils/debounce';
+  import { useRouter } from 'vue-router';
 
-  const selected = ref<Game | null>(null);
-  console.log('Selected game:', selected.value);
-  const options = ref<Game[]>([]);
-  console.log('Available games:', options.value);
+  interface SelectOption {
+    label: string;
+    value: number;
+  }
+
+  const router = useRouter();
+  const selected = ref<SelectOption | null>(null);
+  const options = ref<SelectOption[]>([]);
   const searchQuery = ref('');
-  console.log('Current request:', searchQuery.value); 
 
   const fetchGames = async (query: string) => {
     if (!query.trim()) {
@@ -19,9 +23,8 @@
     }
 
     try {
-      const games = await searchGames(query);
+      const games = await getFilteredGames({ search: query, limit: 20 });
       options.value = games.map((game) => ({
-        ...game,
         label: game.name,
         value: game.id,
       }));
@@ -34,12 +37,21 @@
   const debouncedFetch = debounce(fetchGames, 300);
 
   watch(searchQuery, (newQuery) => {
-    console.log('Updating request:', newQuery);
     debouncedFetch(newQuery);
   });
 
-  const handleSelect = (option: Game) => {
-    console.log('Click on the hint:', option);
+  const handleSelect = (option: SelectOption | number | null) => {
+    if (typeof option === 'number') {
+      router.push({ name: 'game', params: { id: String(option) } });
+      return;
+    }
+
+    if (option && option.value) {
+      router.push({ name: 'game', params: { id: String(option.value) } });
+      return;
+    }
+
+    console.warn('No valid game selected:', option);
   };
 
 </script>
@@ -57,7 +69,7 @@
     :internal-search="false"
     :resolve-on-load="false"
     @search-change="searchQuery = $event"
-    @select="handleSelect"
+    @update:model-value="handleSelect"
   />
 </template>
 
