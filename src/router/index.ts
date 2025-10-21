@@ -5,6 +5,7 @@ import ResetPassword from '@/components/Content/Auth/ResetPassword.vue';
 import FavoritesView from '@/views/FavoritesView.vue';
 import GameDetailsView from '@/views/GameDetailsView.vue';
 import GamesView from '@/views/GamesView.vue';
+import MyCommentsView from '@/views/MyCommentsView.vue';
 
 const scrollBehavior: RouterScrollBehavior = (to, from, savedPosition) => {
   if (savedPosition) {
@@ -23,6 +24,7 @@ const router = createRouter({
     { path: '/favorites', name: 'favorites', component: FavoritesView, meta: { title: 'Favorites' } },
     { path: '/game/:id', name: 'game', component: GameDetailsView, meta: { title: 'Game' }, props: true },
     { path: '/games', name: 'games', component: GamesView, meta: { title: 'Games' } },
+    { path: '/profile/comments', name: 'my-comments', component: MyCommentsView, meta: { title: 'MyComments' } },
   ],
   scrollBehavior,
 });
