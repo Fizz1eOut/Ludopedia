@@ -2,6 +2,7 @@
   import AppContainer from '@/components/Base/AppContainer.vue';
   import AppUnderlay from '@/components/Base/AppUnderlay.vue';
   import AppFavoriteButton from '@/components/Base/AppFavoriteButton.vue';
+  import AppTagList from '@/components/Base/AppTagList.vue';
   import AppTag from '@/components/Base/AppTag.vue';
   import AppImage from '@/components/Base/AppImage.vue';
   import AppButton from '@/components/Base/AppButton.vue';
@@ -51,19 +52,15 @@
                 {{ new Date(game.first_release_date * 1000).toLocaleDateString() }}
               </div>
               <div class="game-card__platform">
-                <app-tag 
-                  v-for="platform in game.platforms"
-                  :key="platform.id"
+                <app-tag-list 
+                  :items="game.platforms"
                   type="badge"
-                  :text="platform.name"
                 />
               </div>
               <div class="game-card__genres">
-                <app-tag 
-                  v-for="genre in game.genres"
-                  :key="genre.id"
+                <app-tag-list
+                  :items="game.genres"
                   type="success"
-                  :text="genre.name"
                 />
               </div>
             </div>
