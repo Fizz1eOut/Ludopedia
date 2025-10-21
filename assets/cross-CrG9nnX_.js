@@ -1,0 +1,1 @@
+import{c as o,o as t,a as r}from"./index-CrN3wa32.js";const s={xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 16 16"};function n(l,e){return t(),o("svg",s,e[0]||(e[0]=[r("path",{"fill-rule":"evenodd",d:"M0 14.545 1.455 16 8 9.455 14.545 16 16 14.545 9.455 8 16 1.455 14.545 0 8 6.545 1.455 0 0 1.455 6.545 8z"},null,-1)]))}const c={render:n};export{c as default,n as render};
