@@ -29,6 +29,7 @@ type ReviewWithProfile = DBReview & { profiles?: ProfileSlim }
 
 export const useReviewsStore = defineStore('reviews', () => {
   const reviews = ref<Review[]>([]);
+  const userReviews = ref<Review[]>([]);
   const loading = ref(false);
   const error = ref<string | null>(null);
 
@@ -37,6 +38,8 @@ export const useReviewsStore = defineStore('reviews', () => {
     const total = reviews.value.reduce((sum, r) => sum + (r.rating || 0), 0);
     return parseFloat((total / reviews.value.length).toFixed(1));
   });
+
+  const userReviewsCount = computed(() => userReviews.value.length);
 
   const loadReviews = async (gameId: string): Promise<void> => {
     try {
@@ -76,6 +79,50 @@ export const useReviewsStore = defineStore('reviews', () => {
     }
   };
 
+  const loadUserReviews = async (): Promise<void> => {
+    const auth = useAuthStore();
+    if (!auth.isAuthenticated || !auth.userId) {
+      userReviews.value = [];
+      return;
+    }
+
+    try {
+      loading.value = true;
+      error.value = null;
+
+      const resp = (await supabase
+        .from('reviews')
+        .select('*, profiles(username, avatar_url)')
+        .eq('user_id', auth.userId)
+        .order('created_at', { ascending: false })) as {
+          data: ReviewWithProfile[] | null
+          error: PostgrestError | null
+        };
+
+      if (resp.error) throw resp.error;
+
+      userReviews.value = (resp.data ?? []).map((r) => ({
+        id: r.id,
+        created_at: r.created_at,
+        user_id: r.user_id,
+        game_id: r.game_id,
+        rating: r.rating,
+        comment: r.comment,
+        user: r.profiles
+          ? {
+            username: r.profiles.username ?? null,
+            avatar_url: r.profiles.avatar_url ?? null
+          }
+          : undefined
+      }));
+    } catch (err: unknown) {
+      console.error(err);
+      error.value = err instanceof Error ? err.message : 'Error loading user reviews';
+    } finally {
+      loading.value = false;
+    }
+  };
+
   const addReview = async (gameId: string, rating: number, comment: string): Promise<ReviewResponse> => {
     const auth = useAuthStore();
     if (!auth.isAuthenticated || !auth.userId) {
@@ -99,8 +146,8 @@ export const useReviewsStore = defineStore('reviews', () => {
 
       if (insertError) throw insertError;
 
-      // 🔹 После добавления — обновляем список отзывов, чтобы получить с joined профилем
       await loadReviews(gameId);
+      await loadUserReviews();
 
       return { success: true, data: data as Review };
     } catch (err: unknown) {
@@ -111,7 +158,6 @@ export const useReviewsStore = defineStore('reviews', () => {
       loading.value = false;
     }
   };
-
 
   const deleteReview = async (reviewId: string): Promise<ReviewResponse> => {
     const auth = useAuthStore();
@@ -129,6 +175,8 @@ export const useReviewsStore = defineStore('reviews', () => {
       if (deleteError) throw deleteError;
 
       reviews.value = reviews.value.filter(r => r.id !== reviewId);
+      userReviews.value = userReviews.value.filter(r => r.id !== reviewId);
+      
       return { success: true };
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Error deleting review';
@@ -139,10 +187,13 @@ export const useReviewsStore = defineStore('reviews', () => {
 
   return {
     reviews: readonly(reviews),
+    userReviews: readonly(userReviews),
     loading: readonly(loading),
     error: readonly(error),
     averageRating,
+    userReviewsCount,
     loadReviews,
+    loadUserReviews,
     addReview,
     deleteReview
   };
