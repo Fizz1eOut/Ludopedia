@@ -4,7 +4,7 @@
   import type { GameScreenshots } from '@/interface/game.interface';
 
   interface DetailsGameScreenshotsProps {
-    screenshots?: GameScreenshots[]
+    screenshots?: readonly GameScreenshots[];
     size?: string
   }
   defineProps<DetailsGameScreenshotsProps>();
