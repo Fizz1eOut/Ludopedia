@@ -11,7 +11,7 @@
   }
 
   const props = withDefaults(defineProps<Props>(), {
-    showProgress: true
+    showProgress: true,
   });
 
   const splideRoot = ref<HTMLDivElement | null>(null);
@@ -47,7 +47,7 @@
     const progressBar = splideRoot.value?.querySelector('.splide__progress__bar') as HTMLElement;
     if (!progressBar) return;
 
-    let interval: number | null = null;
+    const interval = ref<NodeJS.Timeout | null>(null);
     let progress = 0;
     let isRunning = false;
     const duration = splide.options.interval || 3000;
@@ -63,17 +63,17 @@
 
     const startProgress = () => {
       if (isRunning) return;
-      
+
       progress = 0;
       progressBar.style.width = '0%';
       isRunning = true;
-      interval = setInterval(updateProgress, 16);
+      interval.value = setInterval(updateProgress, 16);
     };
 
     const stopProgress = () => {
-      if (interval) {
-        clearInterval(interval);
-        interval = null;
+      if (interval.value) {
+        clearInterval(interval.value);
+        interval.value = null;
         isRunning = false;
       }
     };
@@ -84,33 +84,33 @@
       progressBar.style.width = '0%';
     };
 
-    let pauseTimeout: number | null = null;
-    let playTimeout: number | null = null;
+    const pauseTimeout = ref<NodeJS.Timeout | null>(null);
+    const playTimeout = ref<NodeJS.Timeout | null>(null);
 
     splide.on('autoplay:playing', () => {
-      if (pauseTimeout) {
-        clearTimeout(pauseTimeout);
-        pauseTimeout = null;
+      if (pauseTimeout.value) {
+        clearTimeout(pauseTimeout.value);
+        pauseTimeout.value = null;
       }
-      if (playTimeout) {
-        clearTimeout(playTimeout);
+      if (playTimeout.value) {
+        clearTimeout(playTimeout.value);
       }
 
-      playTimeout = setTimeout(() => {
+      playTimeout.value = setTimeout(() => {
         startProgress();
       }, 10);
     });
 
     splide.on('autoplay:pause', () => {
-      if (playTimeout) {
-        clearTimeout(playTimeout);
-        playTimeout = null;
+      if (playTimeout.value) {
+        clearTimeout(playTimeout.value);
+        playTimeout.value = null;
       }
-      if (pauseTimeout) {
-        clearTimeout(pauseTimeout);
+      if (pauseTimeout.value) {
+        clearTimeout(pauseTimeout.value);
       }
 
-      pauseTimeout = setTimeout(() => {
+      pauseTimeout.value = setTimeout(() => {
         stopProgress();
       }, 10);
     });
@@ -121,6 +121,12 @@
     });
 
     setTimeout(startProgress, 100);
+
+    onBeforeUnmount(() => {
+      if (interval.value) clearInterval(interval.value);
+      if (playTimeout.value) clearTimeout(playTimeout.value);
+      if (pauseTimeout.value) clearTimeout(pauseTimeout.value);
+    });
   };
 
   onBeforeUnmount(() => {
@@ -132,16 +138,12 @@
   <div ref="splideRoot" class="splide custom-splide">
     <div class="splide__track">
       <ul class="splide__list">
-        <li
-          v-for="(slide, index) in props.slides"
-          :key="index"
-          class="splide__slide"
-        >
+        <li v-for="(slide, index) in props.slides" :key="index" class="splide__slide">
           <slot :slide="slide" />
         </li>
       </ul>
     </div>
-    
+
     <div v-if="showProgress" class="splide__progress">
       <div class="splide__progress__bar"></div>
     </div>
