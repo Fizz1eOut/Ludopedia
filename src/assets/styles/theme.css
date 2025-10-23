@@ -117,13 +117,12 @@
 
 /* СВЕТЛАЯ ТЕМА — переопределение только нужного */
 .light {
-  --background-color: #ffffff;
+  --background-color: #e5e7eb;
   /* Основной светлый фон */
-  --surface-color: #f3f4f6;
-  /* Карточки, инпуты — gray-100 */
+  --surface-color: #bfc2c7;
+  /* Карточки, инпуты */
   --hover-color: #f9fafb;
   /* Hover фон — gray-50 */
-
   --text-primary: #111827;
   /* Основной текст — gray-900 */
   --text-secondary: #374151;

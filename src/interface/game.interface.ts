@@ -40,7 +40,7 @@ export interface GameResponse {
   involved_companies?: readonly InvolvedCompany[];
   platforms?: readonly GamePlatform[];
   videos?: readonly GameVideo[];
-  screenshots: GameScreenshots[]
+  screenshots?: readonly GameScreenshots[];
   rating?: number;
   aggregated_rating?: number;
   summary?: string;
